@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rodrigo Arroyo Neumann — Gerente Comercial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c0f;
+      --surface: #111318;
+      --border: #1e2229;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200, 169, 110, 0.15);
+      --text: #e8e6e0;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.4;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 50;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 12, 15, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-line {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 45%;
+      border-left: 1px solid var(--border);
+      background: linear-gradient(135deg, transparent 0%, rgba(200, 169, 110, 0.03) 100%);
+    }
+
+    .hero-number {
+      position: absolute;
+      right: 3rem;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.3em;
+      opacity: 0.4;
+    }
+
+    .hero-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-name span { display: block; color: var(--accent); font-style: italic; }
+
+    .hero-title {
+      font-size: 1rem;
+      color: var(--text-dim);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .stat { border-left: 1px solid var(--accent); padding-left: 1rem; }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    .hero-cta { display: flex; gap: 1rem; opacity: 0; animation: fadeUp 0.8s 1s forwards; }
+
+    .btn {
+      padding: 0.85rem 2rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary { background: var(--accent); color: var(--bg); font-weight: 500; }
+    .btn-primary:hover { background: #d4b87a; transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    section { padding: 6rem 3rem; max-width: 1200px; margin: 0 auto; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-number { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.2em; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; letter-spacing: -0.01em; }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+
+    .about-text p { font-size: 1.05rem; line-height: 1.8; color: var(--text-dim); margin-bottom: 1.5rem; }
+    .about-text p strong { color: var(--text); font-weight: 400; }
+
+    .about-personal { display: flex; flex-direction: column; gap: 1rem; }
+
+    .personal-item {
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .personal-item:hover { border-color: var(--accent); }
+    .personal-icon { font-size: 1.5rem; width: 2.5rem; text-align: center; }
+    .personal-text { font-size: 0.9rem; color: var(--text-dim); }
+    .personal-text strong { display: block; color: var(--text); font-weight: 400; margin-bottom: 0.15rem; }
+
+    .experience-wrapper { position: relative; }
+
+    .timeline-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .exp-item {
+      padding-left: 2.5rem;
+      padding-bottom: 3rem;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s;
+    }
+
+    .exp-item.visible { opacity: 1; transform: translateX(0); }
+
+    .exp-dot {
+      position: absolute;
+      left: -4px;
+      top: 8px;
+      width: 9px;
+      height: 9px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .exp-dot.current { width: 11px; height: 11px; left: -5px; animation: pulse 2s infinite; }
+
+    .exp-years { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+    .exp-role { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.25rem; }
+    .exp-company { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
+    .exp-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.7; }
+
+    .exp-tag {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200, 169, 110, 0.3);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+    .edu-card {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s, transform 0.6s, border-color 0.3s;
+    }
+
+    .edu-card.visible { opacity: 1; transform: translateY(0); }
+
+    .edu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .edu-card:hover { border-color: rgba(200, 169, 110, 0.3); }
+    .edu-card:hover::before { transform: scaleX(1); }
+
+    .edu-year { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.2em; margin-bottom: 1rem; }
+    .edu-degree { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; margin-bottom: 0.5rem; line-height: 1.3; }
+    .edu-institution { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; }
+
+    .contact-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+    .contact-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .contact-title { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; line-height: 1.1; margin-bottom: 1.5rem; }
+    .contact-title em { color: var(--accent); font-style: italic; }
+
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text-dim);
+      transition: all 0.3s;
+      font-size: 0.9rem;
+    }
+
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); padding-left: 2rem; }
+    .contact-link-icon { font-size: 1.1rem; width: 1.5rem; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      border-top: 1px solid var(--border);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 8px var(--accent); }
+      50% { box-shadow: 0 0 20px var(--accent), 0 0 40px rgba(200, 169, 110, 0.3); }
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 6rem 1.5rem 3rem; }
+      .hero-stats { gap: 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      section { padding: 4rem 1.5rem; }
+      .contact-inner { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">R. Arroyo N.</div>
+    <ul class="nav-links">
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#experiencia">Experiencia</a></li>
+      <li><a href="#educacion">Educación</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-bg-line"></div>
+    <div class="hero-number">PERFIL PROFESIONAL — 2024</div>
+    <div class="hero-content">
+      <p class="hero-tag">// Ingeniero Civil Industrial · MBA</p>
+      <h1 class="hero-name">
+        Rodrigo Arroyo
+        <span>Neumann</span>
+      </h1>
+      <p class="hero-title">Gerente de Camiones Iveco & Foton · Andes Motor — Grupo Kaufmann</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-number">30+</div>
+          <div class="stat-label">Años de experiencia</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">B2B</div>
+          <div class="stat-label">Especialidad</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">MBA</div>
+          <div class="stat-label">Finis Terrae</div>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <a href="#contacto" class="btn btn-primary">Contactar</a>
+        <a href="#experiencia" class="btn btn-secondary">Ver trayectoria</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="sobre-mi">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2 class="section-title">Sobre mí</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Ingeniero Civil Industrial con más de <strong>30 años de trayectoria</strong> en la industria automotriz y de transporte pesado. Especialista en <strong>negocios B2B</strong>, gestión comercial y desarrollo de mercados para marcas de camiones y buses a nivel nacional.</p>
+        <p>A lo largo de su carrera ha liderado equipos comerciales en empresas de primer nivel como <strong>Porsche Chile, Kaufmann Mercedes-Benz y Andes Motor</strong>, consolidando relaciones estratégicas con clientes corporativos y participando en las principales licitaciones del sector.</p>
+        <p>Su formación continua, coronada por un <strong>MBA en la Universidad Finis Terrae</strong>, refleja su compromiso con la excelencia y la visión de negocio de largo plazo.</p>
+      </div>
+      <div class="about-personal">
+        <div class="personal-item">
+          <div class="personal-icon">🎾</div>
+          <div class="personal-text">
+            <strong>Apasionado del pádel</strong>
+            Juega cada domingo hace más de 10 años, disciplina y constancia como estilo de vida
+          </div>
+        </div>
+        <div class="personal-item">
+          <div class="personal-icon">🐾</div>
+          <div class="personal-text">
+            <strong>Kaly — Pastor Shetland</strong>
+            Compañera fiel de 9 años, parte esencial de la familia
+          </div>
+        </div>
+        <div class="personal-item">
+          <div class="personal-icon">🚛</div>
+          <div class="personal-text">
+            <strong>Industria automotriz y transporte</strong>
+            Más de tres décadas construyendo relaciones y cerrando negocios
+          </div>
+        </div>
+        <div class="personal-item">
+          <div class="personal-icon">📍</div>
+          <div class="personal-text">
+            <strong>Santiago, Chile</strong>
+            Área Metropolitana · Disponible para reuniones presenciales
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experiencia" style="max-width:1200px; margin:0 auto; padding: 6rem 3rem;">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2 class="section-title">Trayectoria</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="experience-wrapper">
+      <div class="timeline-line"></div>
+
+      <div class="exp-item">
+        <div class="exp-dot current"></div>
+        <div class="exp-years">ENE 2024 — ACTUALIDAD</div>
+        <div class="exp-role">Gerente de Camiones Iveco & Foton</div>
+        <div class="exp-company">Andes Motor · Grupo Kaufmann · Santiago</div>
+        <div class="exp-desc">Liderazgo de la división de camiones para las marcas Iveco y Foton, gestionando la estrategia comercial y el equipo de ventas a nivel nacional.</div>
+        <span class="exp-tag">Actual</span>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">ENE 2021 — ENE 2024 · 3 años</div>
+        <div class="exp-role">Gerente de Ventas Camiones y Buses VW</div>
+        <div class="exp-company">Porsche Chile · Gran Santiago</div>
+        <div class="exp-desc">Dirección comercial de la división de camiones y buses Volkswagen, desarrollando relaciones estratégicas con clientes corporativos en el segmento B2B.</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">FEB 2019 — ENE 2021 · 2 años</div>
+        <div class="exp-role">Gerente División Buses</div>
+        <div class="exp-company">Porsche Chile · Santiago</div>
+        <div class="exp-desc">Gestión integral de la división de buses, liderando el equipo comercial y la estrategia de posicionamiento de marca en el mercado nacional.</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">AGO 2018 — FEB 2019 · 7 meses</div>
+        <div class="exp-role">Key Account Manager División Buses</div>
+        <div class="exp-company">Kaufmann Mercedes-Benz · Santiago</div>
+        <div class="exp-desc">Gestión de cuentas clave para la división de buses Mercedes-Benz, atendiendo licitaciones y clientes estratégicos del sector transporte.</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">NOV 2016 — JUL 2018 · 1 año 9 meses</div>
+        <div class="exp-role">Gerente Comercial</div>
+        <div class="exp-company">Neobus Chile SpA · Pudahuel</div>
+        <div class="exp-desc">Filial de San Marino Onibus (Brasil). Responsable de la comercialización de carrocerías para buses de corta, media y larga distancia en América Latina.</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">ENE 2009 — ABR 2016 · 7 años</div>
+        <div class="exp-role">Gerente Comercial</div>
+        <div class="exp-company">Vivipra Ltda. · Santiago</div>
+        <div class="exp-desc">Planificación comercial de marcas de buses internacionales: King Long (China), Busscar (Colombia), Modasa (Perú) y Mascarello (Brasil).</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">DIC 2001 — DIC 2008 · 7 años</div>
+        <div class="exp-role">Gerente Comercial Buses VW</div>
+        <div class="exp-company">Maco Volkswagen · Santiago</div>
+        <div class="exp-desc">Dirección de la gerencia comercial de buses Volkswagen, consolidando la presencia de la marca en el mercado nacional de transporte.</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">NOV 1999 — DIC 2001 · 2 años</div>
+        <div class="exp-role">Sub Gerente de Ventas Casa Matriz</div>
+        <div class="exp-company">Citroën Chile S.A. · Santiago</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">OCT 1994 — NOV 1999 · 5 años</div>
+        <div class="exp-role">Jefe Dpto. Ventas Directas & Operaciones</div>
+        <div class="exp-company">Nissan Cidef · Santiago</div>
+        <div class="exp-desc">Responsable del equipo de ventas de la Casa Matriz. Participación en licitaciones públicas y privadas. Gestión de operaciones, facturación y pre-entrega.</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-years">1992 — 1994 · 2 años</div>
+        <div class="exp-role">Jefe de Distribución y Abastecimiento</div>
+        <div class="exp-company">Tricot S.A. · Santiago</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="educacion">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2 class="section-title">Formación académica</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-year">2019 — 2021</div>
+        <div class="edu-degree">MBA · Magíster en Administración de Empresas</div>
+        <div class="edu-institution">Universidad Finis Terrae</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-year">1985 — 1991</div>
+        <div class="edu-degree">Ingeniería Civil Industrial</div>
+        <div class="edu-institution">Universidad de La Frontera</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-year">1994</div>
+        <div class="edu-degree">Diploma de Postgrado en Gestión de Marketing</div>
+        <div class="edu-institution">Universidad de Chile</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-year">1993</div>
+        <div class="edu-degree">Diploma en Gestión Logística</div>
+        <div class="edu-institution">Universidad de Santiago de Chile</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="contact-section" id="contacto">
+    <div class="contact-inner">
+      <div>
+        <h2 class="contact-title">¿Hablamos de <em>negocios?</em></h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.7;">
+          Disponible para conversaciones sobre oportunidades comerciales, proyectos estratégicos y alianzas en la industria del transporte y automotriz.
+        </p>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:Rodrigo.arroyon@gmail.com" class="contact-link">
+          <span class="contact-link-icon">✉</span>
+          Rodrigo.arroyon@gmail.com
+        </a>
+        <a href="tel:+56961228645" class="contact-link">
+          <span class="contact-link-icon">↗</span>
+          +56 9 6122 8645
+        </a>
+        <a href="https://www.linkedin.com/in/rodrigo-arroyo-neumann-17305014/" target="_blank" class="contact-link">
+          <span class="contact-link-icon">in</span>
+          LinkedIn — Rodrigo Arroyo Neumann
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2024 Rodrigo Arroyo Neumann · Ingeniero Civil Industrial · MBA
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.exp-item, .edu-card').forEach(el => observer.observe(el));
+
+    const sections = document.querySelectorAll('section, [id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 200) current = section.getAttribute('id');
+      });
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === `#${current}` ? 'var(--accent)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
